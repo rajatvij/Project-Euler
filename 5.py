@@ -9,37 +9,30 @@ numbers from 1 to 20?
 '''
 
 
-def get_prime_factors(n):
-    results = []
+def smallest_divisible(num):
+    found = False
+    divisible = num
+    while not found:
+        # note that I'm not increasing by 1, but by the search number itself
+        num += divisible
+        flag = True
+        x = divisible - 1
+        # test against all numbers 2..store - 1
+        # don't need to test against divisible since we already know it is a
+        # factor
+        while x > 1:
+            if num % x != 0:
+                # doesn't divide easily, so break and try next num in sequence
+                flag = False
+                break
+            x -= 1
+        if flag:
+            return num
 
-    # iterate over all even numbers first.
-    while n % 2 == 0:
-        results.append(2)
-        n //= 2
+# NOTE: I know this can be optimized by looking at multiples of all prime
+# numbers under number(20). But this code looks cleaner and i couldn't do
+# what i wanted without bloating the code.
 
-    # try odd numbers up to sqrt(n)
-    limit = n ** 0.5
+print smallest_divisible(10)
+print smallest_divisible(20)
 
-    # Starting out with 3, ie., ignoring 1.
-    i = 3
-    while i <= limit:
-        # Checking for divisibility with the ith number and reducing
-        # n to reflect the divisibility
-        if n % i == 0:
-            results.append(i)
-            n //= i
-        else:
-            # Increase i by 2, because the prime numbers are odd except for 2
-            i += 2
-
-    return results
-
-
-def divisible_by_range(num):
-    result = 1
-    prime_factors = get_prime_factors(num)
-    for x in prime_factors:
-        result = result * x
-    return result
-
-print(divisible_by_range(10))
